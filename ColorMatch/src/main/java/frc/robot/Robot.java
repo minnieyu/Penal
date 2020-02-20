@@ -40,7 +40,8 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
 
-  public static VictorSPX spinMotor = new VictorSPX(3);;
+  public static VictorSPX spinMotor = new VictorSPX(4);
+  public static VictorSPX motor = new VictorSPX(2);
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
@@ -56,9 +57,9 @@ public class Robot extends TimedRobot {
   private double c;
   private double d;
   int i;
+  
   @Override
   public void robotInit() {
-  
   
                                                                                   
   m_colorMatcher.addColorMatch(kBlueTarget);
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
 
 @Override
     public void robotPeriodic() {
+
      
 }
        
@@ -112,9 +114,12 @@ public class Robot extends TimedRobot {
     String colorString;
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);   
     
+    
+
     if(joy.getRawButtonPressed(6)){i++;
-    }if(i==1){spinMotor.set(ControlMode.PercentOutput, 0.3);Timer.delay(10);i=i-1;}
-    else if (i==0){spinMotor.set(ControlMode.PercentOutput, 0);}
+    }if(i==1){motor.set(ControlMode.PercentOutput, -0.2);Timer.delay(5);motor.set(ControlMode.PercentOutput, 0); spinMotor.set(ControlMode.PercentOutput, -0.3);Timer.delay(10); i=i+1;}
+    else if (i==2){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0.2);Timer.delay(5);i=i-2;}
+    else if (i==0){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0);}
 
     if (match.color == kBlueTarget){
       colorString = "Blue";
@@ -129,51 +134,58 @@ public class Robot extends TimedRobot {
     }
 
   
-  if (joy.getRawButtonPressed(1)){
-      a++;}
-  if (a==1) {spinMotor.set(ControlMode.PercentOutput, 0.5);
-    if (match.color == kGreenTarget){
-      spinMotor.set(ControlMode.PercentOutput, 0);
-    a=a-1;
+  if (joy.getRawButtonPressed(1)){a++;
+  if (a==0){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0);
+  }}if (a==1) {motor.set(ControlMode.PercentOutput,-0.2);Timer.delay(5);a++;
+  }else if (a==2) {motor.set(ControlMode.PercentOutput, 0);spinMotor.set(ControlMode.PercentOutput, 0.2);
+  if (match.color == kGreenTarget){
+    spinMotor.set(ControlMode.PercentOutput, 0);Timer.delay(5);motor.set(ControlMode.PercentOutput, 0.2);Timer.delay(5);a++;
+  }if (a==3){motor.set(ControlMode.PercentOutput, 0);a=a-3;
   }}
-  
-if (joy.getRawButtonPressed(2)){
-   b++;}
-if (b==1) {spinMotor.set(ControlMode.PercentOutput, 0.5);
+   
+
+  if (joy.getRawButtonPressed(2)){b++;
+  if (b==0){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0);
+  }}if (b==1) {motor.set(ControlMode.PercentOutput,-0.2);Timer.delay(5);b++;
+  }else if (b==2) {motor.set(ControlMode.PercentOutput, 0);spinMotor.set(ControlMode.PercentOutput, 0.2);
   if (match.color == kRedTarget){
-    spinMotor.set(ControlMode.PercentOutput, 0);
-    b=b-1;
+    spinMotor.set(ControlMode.PercentOutput, 0);Timer.delay(5);motor.set(ControlMode.PercentOutput, 0.2);Timer.delay(5);b++;
+  }if (b==3){motor.set(ControlMode.PercentOutput, 0);b=b-3;
+  }}
 
-}}
+  if (joy.getRawButtonPressed(3)){c++;
+  if (c==0){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0);
+  }}if (c==1) {motor.set(ControlMode.PercentOutput,-0.2);Timer.delay(5);c++;
+  }else if (c==2) {motor.set(ControlMode.PercentOutput, 0);spinMotor.set(ControlMode.PercentOutput, 0.2);
+  if (match.color == kBlueTarget){
+    spinMotor.set(ControlMode.PercentOutput, 0);Timer.delay(5);motor.set(ControlMode.PercentOutput, 0.2);Timer.delay(5);c++;
+  }if (c==3){motor.set(ControlMode.PercentOutput, 0);c=c-3;
+  }}
 
-  
-if (joy.getRawButtonPressed(3)){
-  c++;}
-if (c==1) {spinMotor.set(ControlMode.PercentOutput, 0.5);
-if (match.color == kBlueTarget){
-  spinMotor.set(ControlMode.PercentOutput, 0);
-  c=c-1;
-}}
+   
+  if (joy.getRawButtonPressed(4)){d++;
+  if (d==0){spinMotor.set(ControlMode.PercentOutput, 0);motor.set(ControlMode.PercentOutput, 0);
+  }}if (d==1) {motor.set(ControlMode.PercentOutput,-0.2);Timer.delay(5);d++;
+  }else if (d==2) {motor.set(ControlMode.PercentOutput, 0);spinMotor.set(ControlMode.PercentOutput, 0.2);
+  if (match.color == kYellowTarget){
+    spinMotor.set(ControlMode.PercentOutput, 0);Timer.delay(5);motor.set(ControlMode.PercentOutput, 0.2);Timer.delay(5);d++;
+  }if (d==3){motor.set(ControlMode.PercentOutput, 0);d=d-3;
+  }}
+
+ 
 
 
-if (joy.getRawButtonPressed(4)){
-  d++;}
-if (d==1) {spinMotor.set(ControlMode.PercentOutput, 0.5);
-if (match.color == kYellowTarget){
-  spinMotor.set(ControlMode.PercentOutput, 0);
-  d=d-1;
-}}
 
 
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Blue", detectedColor.blue);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Confidence", match.confidence);
-    SmartDashBoard.putNumber("a", a);
-    SmartDashBoard.putNumber("b", b);
-    SmartDashBoard.putNumber("c", c);
-    SmartDashBoard.putNumber("d", d);
-    SmartDashBoard.putNumber("i", i);
+    SmartDashboard.putNumber("a", a);
+    SmartDashboard.putNumber("b", b);
+    SmartDashboard.putNumber("c", c);
+    SmartDashboard.putNumber("d", d);
+    SmartDashboard.putNumber("i", i);
     SmartDashboard.putString("Deceted Color", colorString);
 
 }
